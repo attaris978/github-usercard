@@ -1,9 +1,18 @@
+// import axios from './node_modules/axios/dist/axios';
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-
+//  axios.get("https://api.github.com/users/attaris978");
+const cards = document.querySelector(".cards");
+const cE = (elType) => document.createElement(elType);
+const getData = async (url) => {
+  let data = await fetch(url).then(val => val.json());
+return data;
+}
+getData("https://api.github.com/users/attaris978").then(val => cards.appendChild(document.createElement("p")).innerText = Object.entries(val).toString());
+getData("https://api.github.com/users/attaris978").then(val => console.log(val));
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -50,6 +59,29 @@ const followersArray = [];
     </div>
 */
 
+const makeCard = (gitPro) => {
+  console.log(gitPro.login,gitPro.name);
+  let card = cE("div");
+  card.classList.add("card");
+  card.appendChild(cE("img")).src = gitPro["avatar_url"];
+  let infoDiv = cE("div");
+  card.appendChild(infoDiv).classList.add("card-info");
+  let theName = cE("h3");
+  theName.textContent = gitPro.name;
+  infoDiv.appendChild(theName).classList.add("name");
+  let theUserName = cE("p");
+  theUserName.innerText = gitPro.login;
+  infoDiv.appendChild(theUserName).classList.add("username");
+  infoDiv.appendChild(cE("p")).innerHTML = `Profile:<a href='${gitPro.url}'>${gitPro.url}</a>`;
+  infoDiv.appendChild(cE("p")).innerHTML = `Followers: ${gitPro.followers}`;
+  infoDiv.appendChild(cE("p")).innerHTML = `Following: ${gitPro.following}`;
+  infoDiv.appendChild(cE("p")).innerHTML = `Bio: ${gitPro.bio}`;
+  return card;
+
+  
+
+  }
+getData("https://api.github.com/users/attaris978").then(val => cards.appendChild(makeCard(val)));
 /*
   List of LS Instructors Github username's:
     tetondan
