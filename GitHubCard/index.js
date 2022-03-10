@@ -1,18 +1,14 @@
-// import axios from './node_modules/axios/dist/axios';
 /*
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
 */
-//  axios.get("https://api.github.com/users/attaris978");
 const cards = document.querySelector(".cards");
 const cE = (elType) => document.createElement(elType);
-const getData = async (url) => {
-  let data = await fetch(url).then(val => val.json());
-return data;
+const getProfileData = async (profName) => {
+  let data = await fetch(`https://api.github.com/users/${profName}`);//.then(result => result.json());
+return data.json();
 }
-getData("https://api.github.com/users/attaris978").then(val => cards.appendChild(document.createElement("p")).innerText = Object.entries(val).toString());
-getData("https://api.github.com/users/attaris978").then(val => console.log(val));
 /*
   STEP 2: Inspect and study the data coming back, this is YOUR
     github info! You will need to understand the structure of this
@@ -37,7 +33,7 @@ getData("https://api.github.com/users/attaris978").then(val => console.log(val))
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [ "tetondan", "osmocom", "justsml", "luishrd", "bigknell" ];
 
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
@@ -60,7 +56,6 @@ const followersArray = [];
 */
 
 const makeCard = (gitPro) => {
-  console.log(gitPro.login,gitPro.name);
   let card = cE("div");
   card.classList.add("card");
   card.appendChild(cE("img")).src = gitPro["avatar_url"];
@@ -81,7 +76,15 @@ const makeCard = (gitPro) => {
   
 
   }
-getData("https://api.github.com/users/attaris978").then(val => cards.appendChild(makeCard(val)));
+//getProfileData("attaris978").then(val => cards.appendChild(makeCard(val)));
+
+
+const printCards = (profilesArray) => {
+  profilesArray.forEach(val => getProfileData(val).then(val => cards.appendChild(makeCard(val))));
+}
+
+printCards(followersArray);
+
 /*
   List of LS Instructors Github username's:
     tetondan
